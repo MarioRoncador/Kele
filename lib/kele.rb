@@ -1,4 +1,6 @@
 require 'httparty'
+require 'vcr','3.0.3'
+require 'fakeweb'
 require 'json'
 require './lib/roadmap.rb'
 require './lib/message.rb'
@@ -39,6 +41,18 @@ class Kele
     response = self.class.post("https://www.bloc.io/api/v1/checkpoint_submissions", options)
     if response.success?
       "Your checkpoint #{checkpoint_id} was submitted successfully"
+      response
+    else
+      "Error"
+      response
+    end
+  end
+
+  def update_checkpoint(id, checkpoint_id, assignment_branch, assignment_commit_link, comment)
+    options = {body: {"checkpoint_id" => checkpoint_id, "assignment_branch" => assignment_branch, "assignment_commit_link" => assignment_commit_link, "comment" => comment}.merge(user_auth)}
+    response = self.class.put("https://www.bloc.io/api/v1/checkpoint_submissions/#{id}", options)
+    if response.success?
+      "Your checkpoint #{checkpoint_id} was updated successfully"
       response
     else
       "Error"
