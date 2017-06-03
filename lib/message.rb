@@ -5,15 +5,15 @@ module Message
     @messages = JSON.parse(response.body)
   end
 
-    #Ryan's recipient_id = 456756
+  #my user_id = 2352229
+  #Ryan's recipient_id = 456756
   def create_message(receiver, subject, body)
     #pulls the user_id from the login and assigns it to sender
-    sender = user_id
-    options = {body => { "sender" => sender, "recipient_id" => receiver, "subject" => subject, "stripped-text" => body}.merge(user_auth)}
+    options = {body: {"recipient_id" => receiver, "subject" => subject, "stripped-text" => body}.merge(user_auth)}
     response = self.class.post("https://www.bloc.io/api/v1/messages", options)
     if response.success?
-			"Your message was sent successfully"
-		else
+      "Your message was sent successfully"
+    else
       "Error"
     end
   end
